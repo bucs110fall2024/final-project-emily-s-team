@@ -8,15 +8,17 @@
 
 << List team member names >>
 
+Emily Scott
 ***
 
 ## Project Description
 
 << Give an overview of your project >>
-
+I am going to be making a scroller game with native plants & wildlife from the adirondack park, where the user interacts with objects to learn about them. Interacting with an object gives the user a unique item and when they collect them all they win the game.
 ***    
 
 ## GUI Design
+
 
 ### Initial Design
 
