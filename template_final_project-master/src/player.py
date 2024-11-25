@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
     #setup pygame data
     super().__init__()
     # Load the image for the player
-        self.image = pygame.image.load(img_file).convert_alpha()
+        self.image = pygame.image.load("assets/Player.png")
         
         # Get the rectangle of the image for positioning
         self.rect = self.image.get_rect()
