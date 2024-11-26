@@ -15,7 +15,7 @@ class Controller:
         self.clock = pygame.time.Clock()
 
         # Initialize player and sprite groups
-        self.all_sprites = pygame.sprite.Group(self.player)
+        
 
         # State variable
         self.running = True
