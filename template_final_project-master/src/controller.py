@@ -15,7 +15,6 @@ class Controller:
         self.clock = pygame.time.Clock()
 
         # Initialize player and sprite groups
-        self.player = Player(100, 100, "Player.png")
         self.all_sprites = pygame.sprite.Group(self.player)
 
         # State variable
@@ -24,24 +23,4 @@ class Controller:
   
   ### below are some sample loop states ###
 
-  def menuloop(self):
-    
-      #event loop
 
-      #update data
-
-      #redraw
-      
-  def gameloop(self):
-      #event loop
-
-      #update data
-
-      #redraw
-    
-  def gameoverloop(self):
-      #event loop
-
-      #update data
-
-      #redraw
