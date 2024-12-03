@@ -19,6 +19,9 @@ class Player(pygame.sprite.Sprite):
 
         # Ground level (for simplicity, assume the ground is at y=550)
         self.ground_level = 550
+        # Tracks whe user is colliding with something
+        self.on_ground = False
+
     def move(self, keys):
         # Movement based on key input
        
@@ -29,7 +32,10 @@ class Player(pygame.sprite.Sprite):
     def the_gravity(self,worlds):
         self.y_velocity += self.gravity
         self.rect.y += self.y_velocity
+        self.on_ground = False
+       
         ##Dont go thru ground
+
         if self.rect.bottom > self.ground_level:
             self.rect.bottom = self.ground_level
             self.y_velocity = 0  # Reset vertical velocity when on the ground
@@ -38,11 +44,13 @@ class Player(pygame.sprite.Sprite):
             if self.rect.colliderect(world.rect) and self.y_velocity >= 0:
                 self.rect.bottom = world.rect.top
                 self.y_velocity = 0  # Stop falling when on a platform
+                self.on_ground = True 
                 break
     def jump(self,keys):
         # Jump only if on the ground
-        if keys[pygame.K_SPACE] and self.rect.bottom == self.ground_level:
+        if keys[pygame.K_SPACE] and self.y_velocity == 0:
             self.y_velocity = self.jump_strength
+            self.on_ground = False
     def update(self, keys, worlds):
         # Update player position based on keys
         self.move(keys)

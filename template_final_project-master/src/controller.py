@@ -11,13 +11,13 @@ class Controller:
         self.state = "menu"
         
         # Create platform instances as instance attributes
-        self.platform1 = World(100, 400, 200, 50)
-        self.platform2 = World(400, 300, 200, 50)
-        self.platform3 = World(200, 500, 200, 50)
+        self.platform1 = World(400, 400, 150, 15)
+        self.platform2 = World(400, 300, 150, 15)
+        
 
         # Create sprite group for worlds (platforms)
         self.worlds = pygame.sprite.Group()
-        self.worlds.add(self.platform1, self.platform2, self.platform3)
+        self.worlds.add(self.platform1, self.platform2)
 
     def mainloop(self):
       # Setup screen and clock
@@ -30,7 +30,7 @@ class Controller:
       # Create sprite group for easy update and draw
       self.all_sprites = pygame.sprite.Group()
       self.all_sprites.add(self.player)
-      self.all_sprites.add(self.platform1, self.platform2, self.platform3)  # Add platforms to all_sprites
+      self.all_sprites.add(self.platform1, self.platform2)  # Add platforms to all_sprites
 
       while self.running:
           # Handle events
@@ -43,7 +43,7 @@ class Controller:
 
           # Update player and platforms
           self.player.update(keys, self.worlds)  # Update player with worlds passed
-          self.worlds.update()  # Update platforms (no need for `worlds` argument here)
+          self.worlds.update()  # Update platforms 
 
           # Render the screen
           self.screen.fill((135, 206, 250))  # Clear the screen with color
