@@ -17,8 +17,8 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.5  # Force pulling the player down
         self.jump_strength = -10  # Jumping force
 
-        # Ground level (for simplicity, assume the ground is at y=500)
-        self.ground_level = 500
+        # Ground level (for simplicity, assume the ground is at y=550)
+        self.ground_level = 550
     def move(self, keys):
         # Movement based on key input
        
@@ -26,20 +26,25 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
-    def the_gravity(self):
+    def the_gravity(self,worlds):
         self.y_velocity += self.gravity
         self.rect.y += self.y_velocity
         ##Dont go thru ground
         if self.rect.bottom > self.ground_level:
             self.rect.bottom = self.ground_level
             self.y_velocity = 0  # Reset vertical velocity when on the ground
-    
+        
+        for world in worlds:
+            if self.rect.colliderect(world.rect) and self.y_velocity >= 0:
+                self.rect.bottom = world.rect.top
+                self.y_velocity = 0  # Stop falling when on a platform
+                break
     def jump(self,keys):
         # Jump only if on the ground
         if keys[pygame.K_SPACE] and self.rect.bottom == self.ground_level:
             self.y_velocity = self.jump_strength
-    def update(self, keys):
+    def update(self, keys, worlds):
         # Update player position based on keys
         self.move(keys)
-        self.the_gravity()
+        self.the_gravity(worlds)
         self.jump(keys)

@@ -1,5 +1,6 @@
 import pygame
 from src.player import Player
+from src.world import World
 
 class Controller:
     def __init__(self):
@@ -8,35 +9,49 @@ class Controller:
         self.clock = None
         self.running = True
         self.state = "menu"
+        
+        # Create platform instances as instance attributes
+        self.platform1 = World(100, 400, 200, 50)
+        self.platform2 = World(400, 300, 200, 50)
+        self.platform3 = World(200, 500, 200, 50)
+
+        # Create sprite group for worlds (platforms)
+        self.worlds = pygame.sprite.Group()
+        self.worlds.add(self.platform1, self.platform2, self.platform3)
 
     def mainloop(self):
-        # Setup screen and clock
-        self.screen = pygame.display.set_mode((800, 600))
-        self.clock = pygame.time.Clock()
+      # Setup screen and clock
+      self.screen = pygame.display.set_mode((800, 600))
+      self.clock = pygame.time.Clock()
 
-        # Initialize player and sprite groups
-        player = Player(375, 275)  # Starting position near the center
-        all_sprites = pygame.sprite.Group()  # Create the sprite group
-        all_sprites.add(player)
+      # Create player instance
+      self.player = Player(375, 275)  # Starting position near the center
 
-        while self.running:
-            # Handle events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+      # Create sprite group for easy update and draw
+      self.all_sprites = pygame.sprite.Group()
+      self.all_sprites.add(self.player)
+      self.all_sprites.add(self.platform1, self.platform2, self.platform3)  # Add platforms to all_sprites
 
-            # Get pressed keys
-            keys = pygame.key.get_pressed()
+      while self.running:
+          # Handle events
+          for event in pygame.event.get():
+              if event.type == pygame.QUIT:
+                  self.running = False
 
-            # Update sprites
-            all_sprites.update(keys)
+          # Get pressed keys
+          keys = pygame.key.get_pressed()
 
-            # Render the screen
-            self.screen.fill((135, 206, 250))  # Clear the screen with black
-            all_sprites.draw(self.screen)  # Draw all sprites
-            pygame.display.flip()
+          # Update player and platforms
+          self.player.update(keys, self.worlds)  # Update player with worlds passed
+          self.worlds.update()  # Update platforms (no need for `worlds` argument here)
 
-            # Control frame rate
-            self.clock.tick(60)
+          # Render the screen
+          self.screen.fill((135, 206, 250))  # Clear the screen with color
+          self.all_sprites.draw(self.screen)  # Draw all sprites
+          pygame.display.flip()
 
-        pygame.quit()
+          # Control frame rate
+          self.clock.tick(60)
+
+      pygame.quit()
+
