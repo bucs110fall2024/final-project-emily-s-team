@@ -13,18 +13,33 @@ class Player(pygame.sprite.Sprite):
 
         # Movement attributes
         self.speed = 5
+        self.y_velocity = 0  # Vertical speed
+        self.gravity = 0.5  # Force pulling the player down
+        self.jump_strength = -10  # Jumping force
 
+        # Ground level (for simplicity, assume the ground is at y=500)
+        self.ground_level = 500
     def move(self, keys):
         # Movement based on key input
-        if keys[pygame.K_UP]:
-            self.rect.y -= self.speed
-        if keys[pygame.K_DOWN]:
-            self.rect.y += self.speed
+       
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
-
+    def the_gravity(self):
+        self.y_velocity += self.gravity
+        self.rect.y += self.y_velocity
+        ##Dont go thru ground
+        if self.rect.bottom > self.ground_level:
+            self.rect.bottom = self.ground_level
+            self.y_velocity = 0  # Reset vertical velocity when on the ground
+    
+    def jump(self,keys):
+        # Jump only if on the ground
+        if keys[pygame.K_SPACE] and self.rect.bottom == self.ground_level:
+            self.y_velocity = self.jump_strength
     def update(self, keys):
         # Update player position based on keys
         self.move(keys)
+        self.the_gravity()
+        self.jump(keys)

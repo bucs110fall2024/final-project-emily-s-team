@@ -32,7 +32,7 @@ class Controller:
             all_sprites.update(keys)
 
             # Render the screen
-            self.screen.fill((0, 0, 0))  # Clear the screen with black
+            self.screen.fill((135, 206, 250))  # Clear the screen with black
             all_sprites.draw(self.screen)  # Draw all sprites
             pygame.display.flip()
 
