@@ -20,7 +20,7 @@ class Controller:
         # State variable
         self.running = True
         self.state = "menu"
-  
+        pygame.quit()
   ### below are some sample loop states ###
 
 
