@@ -1,6 +1,7 @@
 import pygame
 from src.player import Player
 from src.world import World
+from src.enemy import Enemy
 
 class Controller:
     def __init__(self):
@@ -24,6 +25,11 @@ class Controller:
         self.world_bound_right = World(0,0,5,800)
         self.world_bound_left = World(995,0,5,800)
         
+        self.enemies = pygame.sprite.Group()
+        enemy1 = Enemy(300, 450)  # Example enemy
+        enemy2 = Enemy(500, 550)
+        self.enemies.add(enemy1, enemy2)
+
 
         # Create sprite group for worlds (platforms)
         self.worlds = pygame.sprite.Group()
@@ -40,6 +46,7 @@ class Controller:
       # Create sprite group for easy update and draw
       self.all_sprites = pygame.sprite.Group()
       self.all_sprites.add(self.player)
+      self.all_sprites.add(self.enemies)
       self.all_sprites.add(self.platform1, self.platform2, self.ground, self.world_bound_right,self.world_bound_left,self.platform3,self.platform4, self.platform5,self.platform6, self.platform7,self.platform8)  # Add platforms to all_sprites
 
       while self.running:
@@ -55,7 +62,9 @@ class Controller:
           self.player.update(keys, self.worlds)  # Update player with worlds passed
           self.worlds.update()  # Update platforms 
 
-          # Render the screen
+          if pygame.sprite.spritecollideany(self.player, self.enemies):
+                self.player.rect.topleft = (50,600)  # Reset player position on collision
+
           self.screen.fill((135, 206, 250))  # Clear the screen with color
           self.all_sprites.draw(self.screen)  # Draw all sprites
           pygame.display.flip()
