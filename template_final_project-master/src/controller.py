@@ -68,7 +68,7 @@ class Controller:
         """
         font = pygame.font.Font(None, size)
         render = font.render(text, True, color)
-        text_rect = render.get_rect(center=(400, 300))
+        text_rect = render.get_rect(center=(500,400 ))
         self.screen.blit(render, text_rect)
 
     def menu_loop(self):
@@ -78,8 +78,8 @@ class Controller:
         """
         while self.state == "menu":
             self.screen.fill((0, 0, 0))  # Black background
-            self.display_text("Simple Game", 50, (255, 255, 255))  # Title
-            self.display_text("Press any key to start. Your goal is to avoid the red squares, and collect the green circles!", 30, (255, 255, 255))
+            
+            self.display_text("Welcome to my simple game! Press any key to start. Your goal is to avoid the red squares, and collect the green circles!", 20, (255, 255, 255))
 
             pygame.display.flip()
 
