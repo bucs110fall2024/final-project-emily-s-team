@@ -1,20 +1,20 @@
 
 :warning: Everything between << >> needs to be replaced (remove << >> after replacing)
 
-# << Project Title >>
-## CS110 Final Project  << Semester, Year >>
+# A Simple Collection Game
+## CS110 Final Project  Fall Semester, 2024
 
 ## Team Members
 
-<< List team member names >>
+
 
 Emily Scott
 ***
 
 ## Project Description
 
-<< Give an overview of your project >>
-I am going to be making a scroller game with native plants & wildlife from the adirondack park, where the user interacts with objects to learn about them. Interacting with an object gives the user a unique item and when they collect them all they win the game.
+
+I am going to be making a scroller, parkour game where the user can collect objects whilst avoiding enemies.
 ***    
 
 ## GUI Design
@@ -32,15 +32,19 @@ I am going to be making a scroller game with native plants & wildlife from the a
 
 ### Features
 
-1. << Feature 1 >>
-2. << Feature 2 >>
-3. << Feature 3 >>
-4. << Feature 4 >>
-5. << Feature 5 >>
+1. Moveable player
+2. Collectable items
+3. Damaging items
+4. Menu
+5. Lose and win screen
 
 ### Classes
 
-- << You should have a list of each of your classes with a description >>
+-World class- Creates the aspects of the world, like the ground, platforms, and world boundaries.
+-Enemy class- Creates the "enemies" or damaging squares that will cause you to lose life and potentially lose the game
+-Item class- Creates the "items" that the player can collect in order to win the game
+-Player class- in charge of creating the player that has gravity, jumping, and collisions, and movement
+-Menu Class- creates the counters that count how many items the player has collected as well as how many times the player has collided with an enemy.
 
 ## ATP
 
