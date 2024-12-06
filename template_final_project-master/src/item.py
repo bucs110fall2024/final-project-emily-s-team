@@ -3,7 +3,7 @@ import pygame
 class Item(pygame.sprite.Sprite):
     def __init__(self, x, y, width=20, height=20, color=(0, 255, 0)):
         super().__init__()
-        # Create a visual representation of the item (a green square by default)
+        # Create collectables
         self.image = pygame.Surface((width, height))
         self.image.fill(color)
 
@@ -12,5 +12,10 @@ class Item(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
 
     def handle_collisions(player, items_group):
-        collected_items = pygame.sprite.spritecollide(player, items_group, True)  # Remove collided items
-        return len(collected_items)  # Return the count of collected items
+        """
+        Handles collisions between player and collectables. 
+        Collected itmes occur and disappear when player collides with item
+        Returns count of collected items
+        """
+        collected_items = pygame.sprite.spritecollide(player, items_group, True)  
+        return len(collected_items) 

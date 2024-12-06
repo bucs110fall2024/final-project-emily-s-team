@@ -7,10 +7,17 @@ from src.menu import Menu
 
 class Controller:
     def __init__(self):
-        # Initialize controller variables
+        """
+        Intializations of game world.
+        """
         self.screen = None
         self.clock = None
         self.running = True
+        self.state = "menu"  # Initial state is menu
+        self.item_counter = 0  # Track collected items
+        self.enemy_collision_counter = 0  # Track enemy collisions
+        self.items_collected_to_win = 3  # Number of items required to win
+        self.enemy_collisions_to_lose = 3  # Number of enemy collisions required to lose
 
         # Create platforms (x,y,w,h)
         self.platform1 = World(725, 525, 250, 15)
@@ -42,10 +49,6 @@ class Controller:
         item3 = Item(100, 650)
         self.items.add(item1, item2, item3)
 
-        # Counters for items collected and enemy collisions
-        self.item_counter = 0
-        self.enemy_collision_counter = 0
-
         # Create sprite group for worlds (platforms)
         self.worlds = pygame.sprite.Group()
         self.worlds.add(
@@ -55,8 +58,62 @@ class Controller:
             self.platform6, self.platform7, self.platform8
         )
 
+    def display_text(self, text, size, color):
+        """
+        
+        Utility to display text at the center of the screen
+        Uses the text that is to be displayed, the size and the color
+        
+        
+        """
+        font = pygame.font.Font(None, size)
+        render = font.render(text, True, color)
+        text_rect = render.get_rect(center=(400, 300))
+        self.screen.blit(render, text_rect)
+
+    def menu_loop(self):
+        """
+        Menu screen loop
+
+        """
+        while self.state == "menu":
+            self.screen.fill((0, 0, 0))  # Black background
+            self.display_text("Simple Game", 50, (255, 255, 255))  # Title
+            self.display_text("Press any key to start. Your goal is to avoid the red squares, and collect the green circles!", 30, (255, 255, 255))
+
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    self.state = None
+                if event.type == pygame.KEYDOWN:
+                    self.state = "game"  # Switch to game state
+
+    def end_loop(self, result):
+        """
+        Simple end-game screen loop showing win or lose result
+        Result is whether the player wins or loses
+        """
+        while self.state == "end":
+            self.screen.fill((0, 0, 0))  # Black background
+            if result == "win":
+                self.display_text("You Win!", 50, (0, 255, 0))  # Green for win
+            elif result == "lose":
+                self.display_text("Game Over", 50, (255, 0, 0))  # Red for lose
+
+           
+
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    self.state = None
+                
     def mainloop(self):
-        # Setup screen and clock
+        """Main loop for handling different states."""
+        pygame.init()
         self.screen = pygame.display.set_mode((1000, 800))
         self.clock = pygame.time.Clock()
 
@@ -77,40 +134,51 @@ class Controller:
         )
 
         while self.running:
-            # Handle events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+            if self.state == "menu":
+                self.menu_loop()
+            elif self.state == "game":
+                # Handle events
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
+                        self.state = None
 
-            # Get pressed keys
-            keys = pygame.key.get_pressed()
+                keys = pygame.key.get_pressed()
 
-            # Update player and platforms
-            self.player.update(keys, self.worlds)
-            self.worlds.update()
-            self.enemies.update()
-            self.items.update()
+                # Update player and platforms
+                self.player.update(keys, self.worlds)
+                self.worlds.update()
+                self.enemies.update()
+                self.items.update()
 
-            # Handle item collisions
-            collected_count = Item.handle_collisions(self.player, self.items)
-            self.item_counter += collected_count
+                # Item collisions
+                collected_count = Item.handle_collisions(self.player, self.items)
+                self.item_counter += collected_count
 
-            # Handle enemy collisions
-            if pygame.sprite.spritecollideany(self.player, self.enemies):
-                self.player.rect.topleft = (50, 600)  # Reset player position
-                self.enemy_collision_counter += 1
+                # Handle enemy collisions
+                if pygame.sprite.spritecollideany(self.player, self.enemies):
+                    self.enemy_collision_counter += 1
+                    self.player.rect.topleft = (50, 600)  # Reset player position
 
-            # Clear screen
-            self.screen.fill((135, 206, 250))
+                # Check win/lose conditions
+                if self.item_counter >= self.items_collected_to_win:
+                    self.state = "end"  # Win condition
+                    self.end_loop("win")
+                elif self.enemy_collision_counter >= self.enemy_collisions_to_lose:
+                    self.state = "end"  # Lose condition
+                    self.end_loop("lose")
 
-            # Draw all sprites and menu
-            self.all_sprites.draw(self.screen)
-            self.menu.draw(self.item_counter, self.enemy_collision_counter)
+                # Clear screen
+                self.screen.fill((135, 206, 250))
 
-            # Update display
-            pygame.display.flip()
+                # Draw all sprites and menu
+                self.all_sprites.draw(self.screen)
+                self.menu.draw(self.item_counter, self.enemy_collision_counter)
 
-            # Control frame rate
-            self.clock.tick(60)
+                # Update display
+                pygame.display.flip()
+
+                # Control frame rate
+                self.clock.tick(60)
 
         pygame.quit()
