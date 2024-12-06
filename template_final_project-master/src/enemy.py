@@ -10,3 +10,5 @@ class Enemy(pygame.sprite.Sprite):
         # Create a rectangle for positioning and collision
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+
+        #counter for when 
