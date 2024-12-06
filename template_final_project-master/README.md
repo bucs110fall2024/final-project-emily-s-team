@@ -48,8 +48,31 @@ I am going to be making a scroller, parkour game where the user can collect obje
 
 ## ATP
 
-| Step                 |Procedure             |Expected Results                   |
-|----------------------|:--------------------:|----------------------------------:|
-|  1                   | Run Counter Program  |GUI window appears with count = 0  |
-|  2                   | click count button   | display changes to count = 1      |
-etc...
+Test Case 1: Player Movement
+1. Start the Game
+2. Press a key to get to game
+3. Press arrow key right or left
+4. Player moves in said direction
+Expected Outcome: Player moves in left or right direction
+
+Test Case 2: Player Colliding with platforms
+1. Start the game
+2. Press key to get to game
+3. Player uses space bar to jump onto platform
+Expected outcome: Player doesn't fall through platform and can move on it, but not through it.
+
+Test Case 3: Start Screen
+1. Start the game
+2. Press a key
+Expected outcome: The game starts and player can see platforms
+
+Test Case 4: Player collecting objects
+1. Start the game
+2. Press a key
+3. Player uses arrow keys and spacebar to touch a green circle
+Expected outcome: Item disappears, and counter on top of screen increases
+Test Case 5: Player touching enemies
+1. Start game
+2. Press a key
+3. Player uses arrow keys and spacebar to touch a red square
+Expected outcome: Player will reset position to the beginning, and the counter to see how many times youve collided with enemies increases.
